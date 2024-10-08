@@ -6,6 +6,9 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const upload = require("./multer");
+const fs = require("fs");
+const path = require("path");
 
 const { authenticateToken } = require("./utilities");
 
@@ -121,10 +124,53 @@ app.post("/add-travel-story", authenticateToken, async (req, res) => {
     }
 
     // Convert visitedDate from milliseconds to Date object
-    
+    const parsedVisitedDate = new Date(parseInt(visitedDate));
 
+    try {
+        const travelStory = new TravelStory({
+            title,
+            story,
+            visitedLocation,
+            userId,
+            imageUrl,
+            visitedDate: parsedVisitedDate,
+        });
+
+        await travelStory.save();
+        res.status(201).json({ story: travelStory, message: "Added Successfully" });
+    } catch (error) {
+        res.status(400).json({ error: true, message: error.message });
+    }
 });
 
+// Get All Travel Stories
+app.get("/get-all-stories", authenticateToken, async (req, res) => {
+    const{ userId } = req.user;
+
+    try {
+        const travelStories = await TravelStory.find({ userId: userId }).sort({ isFavourite: -1 });
+        res.status(200).json({ stories: travelStories });
+    } catch (error) {
+        res.status(500).json({ error: true, message: error.message });
+    }
+});
+
+// Route to handle image upload
+app.post("/image-upload", upload.single("image"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res
+            .status(400)
+            .json({ error: true, message: "No image uploaded" });
+        }
+
+        const imageUrl = `http://localhost:8000/uploads/${req.file.filename}`;
+
+        res.status(201).json({ imageUrl });
+    } catch (error) {
+        res.status(500).json({ error: true, message: error.message });
+    }
+});
 
 app.listen(8000);
 module.exports = app;
