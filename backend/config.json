@@ -1,0 +1,3 @@
+{
+    "connectionString": "mongodb+srv://linh:testPass@travelstory.yityb.mongodb.net/?retryWrites=true&w=majority&appName=travelstory"
+}
