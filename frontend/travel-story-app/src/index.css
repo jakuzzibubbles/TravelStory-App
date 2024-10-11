@@ -18,7 +18,7 @@
 @layer components {
   .input-box {
 
-    @apply w-full text-sm bg-cyan-200 rounded px-5 py-3 mb-4 outline-none;
+    @apply w-full text-sm bg-cyan-50 rounded px-5 py-3 mb-4 outline-none;
   }
 
   .btn-primary {
