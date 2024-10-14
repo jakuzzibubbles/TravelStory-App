@@ -1,4 +1,4 @@
-import ADD_STORY_IMG from '../assets/images/add-story-svg';
+import ADD_STORY_IMG from '../assets/images/add-story.svg';
 import NO_SEARCH_DATA_IMG from '../assets/images/no-search-data.svg';
 import NO_FILTER_IMG from '../assets/images/no-filter-data.svg';
 

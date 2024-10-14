@@ -8,15 +8,23 @@ import TravelStoryCard from '../../components/Cards/TravelStoryCard';
 import AddEditTravelStory from './AddEditTravelStory';
 import ViewTravelStory from './ViewTravelStory';
 import EmptyCard from '../../components/Cards/EmptyCard';
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { DayPicker } from 'react-day-picker';
+import moment from 'moment';
+import FilterInfoTitle from '../../components/Cards/FilterInfoTitle';
+import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
 
-const Home = () => {
+  const Home = () => {
   const navigate = useNavigate();
 
   const [userInfo, setUserInfo] = useState(null);
   const [allStories, setAllStories] = useState([]);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterType, setFilterType] = useState('');
+
+  const [dateRange, setDateRange] = useState({ form: null, to: null });
 
   const [openAddEditModal, setOpenAddEditModal] = useState({
     isShown: false,
@@ -82,7 +90,14 @@ const Home = () => {
 
       if (response.data && response.data.story) {
         toast.success("Story Updated Successfully");
+
+        if (filterType === "search" && searchQuery) {
+          onSearchStory(searchQuery);
+        } else if (filterType === "date") {
+          filterStoriesByDate(dateRange);
+        } else {
         getAllTravelStories();
+        }
       }
     } catch (error) {
       console.log("An unexpected error occurred. Please try again.");
@@ -106,6 +121,63 @@ const Home = () => {
       }
   };
 
+  // Search Story
+  const onSearchNote = async (query) => {
+    try {
+      const response = await axiosInstance.get("/search", {
+        params: {
+          query,
+        }
+      });
+
+      if (response.data && response.data.stories) {
+        setFilterType("search");
+        setAllStories(response.data.stories);
+      }
+
+    } catch (error) {
+          console.log("An unexpected error occurred. Please try again.");
+      }
+  };
+
+  const handleClearSearch = () => {
+    setFilterType('');
+    getAllTravelStories();
+  };
+
+  // Handle Filter stories by date range
+  const filterStoriesByDate = async (day) => {
+    try {
+      const startDate = day.from ? moment(day.from).valueOf() : null;
+      const endDate = day.to ? moment(day.to).valueOf() : null;
+
+      if (startDate && endDate) {
+        const response = await axiosInstance.get("/travel-stories/filter", {
+          params: { startDate, endDate },
+        });
+
+        if (response.data && response.data.stories) {
+          setFilterType("date");
+          setAllStories(response.data.stories);
+        }
+       }
+      } catch (error) {
+        console.log("An unexpected error occurred. Please try again.")
+    }
+  };
+
+  // Handle date range select
+  const handleDayClick = (day) => {
+    setDateRange(day);
+    filterStoriesByDate(day);
+  };
+
+  const resetFilter = (day) => {
+    setDateRange({ from: null, to: null });
+    setFilterType(day);
+    getAllTravelStories();
+  };
+
   useEffect(() => {
     getAllTravelStories();
     getUserInfo();
@@ -115,12 +187,27 @@ const Home = () => {
 
   return (
     <>
-      <Navbar userInfo={userInfo} />
+      <Navbar
+      userInfo={userInfo}
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
+      onSearchNote={onSearchNote}
+      handleClearSearch={handleClearSearch}
+      />
 
       <div className='container mx-auto py-10'>
+
+        <FilterInfoTitle
+          filterType={filterType}
+          filterDates={dateRange}
+          onClear={() => {
+            resetFilter();
+          }}
+          />
+
         <div className='flex gap-7'>
           <div className='flex-1'>
-            {allStories.length > 0 ? (
+            {allStories?.length > 0 ? (
               <div className='grid grid-cols-2 gap4'>
                 {allStories.map((item) => {
                   return (
@@ -138,12 +225,26 @@ const Home = () => {
                   );
                 })}
                 </div>
-            ) : (
-              <EmptyCard />
+              ) : (
+              <EmptyCard imgSrc={getEmptyCardImg(filterType)}
+              message={getEmptyCardMessage(filterType)}
+               />
             )}
           </div>
 
-          <div className='w-[320px]'></div>
+          <div className='w-[350px]'>
+            <div className='bg-white border border-slate-200 shadow-lg shadow-slate-200/60 rounded-lg'>
+              <div className='p-3'>
+                <DayPicker
+                 captionLayout='dropdown-buttons'
+                 mode='range'
+                 selected={dateRange}
+                 onSelect={handleDayClick}
+                 pagedNavigation
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

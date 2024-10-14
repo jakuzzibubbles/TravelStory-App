@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MdAdd, MdDeleteOutline, MdUpdate, MdClose } from 'react-icons/md';
+import { MdAdd, MdUpdate, MdClose } from 'react-icons/md';
 import DateSelector from '../../components/Input/DateSelector';
 import ImageSelector from '../../components/Input/ImageSelector';
 import TagInput from '../../components/Input/TagInput';
@@ -160,7 +160,7 @@ const handleDeleteStoryImg = async () => {
         };
 
         // Updating story
-      const response = await axiosInstance.put(
+        await axiosInstance.put(
         "/edit-story/" + storyId, postData
         );
         setStoryImg(null);
