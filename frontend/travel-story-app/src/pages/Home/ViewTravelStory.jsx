@@ -1,6 +1,5 @@
-import React from 'react';
 import { GrMapLocation } from 'react-icons/gr';
-import { MdAdd, MdDeleteOutline, MdUpdate, MdClose } from 'react-icons/md';
+import { MdDeleteOutline, MdUpdate, MdClose } from 'react-icons/md';
 import moment from 'moment';
 
 const ViewTravelStory = ({ storyInfo,  onClose, onEditClick, onDeleteClick }) => {
@@ -37,7 +36,7 @@ const ViewTravelStory = ({ storyInfo,  onClose, onEditClick, onDeleteClick }) =>
 
                 <div className='inline-flex items-center gap-2 text-[13px] text-cyan-600 bg-cyan-200/40 rounded px-2 py-1'>
                     <GrMapLocation className='text-sm' />
-                    {storyInfo && storyInfo.visitedLocation.map((item, index) => storyInfo.visitedLocation.length == index+1 ? `${item}` : `${item}`,
+                    {storyInfo && storyInfo.visitedLocation.map((item, index) => storyInfo.visitedLocation.length == index+1 ? `${item}` : `${item},`
                 )}
                 </div>
              </div>
