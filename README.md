@@ -1,5 +1,5 @@
-![LogIn UI](./frontend/travel-story-app/public/ts-login.png)
 ![SignUp UI](./frontend/travel-story-app/public/ts-signup.png)
+![LogIn UI](./frontend/travel-story-app/public/ts-login.png)
 ![Dashboard UI](./frontend/travel-story-app/public/ts-dashboard.png)
 ![Search](./frontend/travel-story-app/public/ts-search.png)
 
@@ -40,7 +40,7 @@ Creating a user-friendly UI for adding and editing notes challenged my form mana
 
 A significant challenge arose when I encountered a bug that caused duplicate requests in my application. This experience refined my understanding of the `useEffect` dependencies and the importance of cleanup functions. I learned to carefully analyze the flow of data and component lifecycle to identify the root cause of issues.
 
-**Learning**: Debugging is an essential skill that every developer must master. I realized that a methodical approach to identifying and resolving bugs can lead to improved app performance and efficient network usage.
+**Learning**: Debugging is an essential. I realized that a methodical approach to identifying and resolving bugs can lead to improved app performance and efficient network usage.
 
 ### UI Modals and Reusability
 
