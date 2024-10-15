@@ -5,11 +5,6 @@
 
 
 ## Reflecting on My Learning Journey in Full-Stack Development
-
-### The MERN Stack:
-
-The MERN stack has served as the foundation for my full-stack development experience. Each component of the stack contributes to a comprehensive understanding of web development, enabling me to build robust applications.
-
 #### MongoDB:
 **Learning**: The flexibility of MongoDB allows for rapid prototyping and iterative development, which is particularly beneficial in the early stages of project development. However, I also realized that careful planning is necessary to ensure data integrity and efficient querying as the application scales.
 
