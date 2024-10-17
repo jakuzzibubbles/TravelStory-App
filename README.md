@@ -28,7 +28,7 @@ One of the most significant challenges was managing component state effectively.
 
 Integrating RESTful APIs using Axios was another critical aspect of my learning process. Axios allowed me to handle HTTP requests seamlessly, and I learned how to manage authentication headers to secure my API endpoints. I gained valuable experience in configuring Axios instances and managing errors related to authorization.
 
-**Learning**: Effective error handling is essential in any application that relies on external data sources. I learned to implement strategies for gracefully handling failures, which significantly improved the user experience by providing clear feedback.
+**Learning**: Effective error handling is essential in any application that relies on external data sources. I learned to implement strategies for handling failures, which significantly improved the user experience by providing clear return messages.
 
 #### Form Handling and Validation
 
