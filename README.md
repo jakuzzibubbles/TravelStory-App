@@ -1,5 +1,3 @@
----
-
 **Travel App Overview**
 
 This travel app provides a platform for users to explore, document, and share their travel adventures through an intuitive interface. It offers several key features, including:
@@ -24,8 +22,6 @@ This travel app provides a platform for users to explore, document, and share th
 - **Media Handling**: Efficient file uploads allow users to share high-quality images.
 - **Tools**: Moment.js for date handling and search filtering, ensuring seamless user interaction with date-based content.
 - **Hosting**: The app is hosted on [AWS/Heroku], with CI/CD pipelines ensuring smooth deployments.
-
----
 
 ![SignUp UI](./frontend/travel-story-app/public/ts-signup.png)
 ![LogIn UI](./frontend/travel-story-app/public/ts-login.png)
