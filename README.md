@@ -78,9 +78,9 @@
 | CI/CD pipeline failures                     | Medium     | Medium | Test the CI/CD pipeline thoroughly in a staging environment before production use. |
 
 #### **Communication Plan**
-- **Weekly Status Meetings**: Check-in meetings every Monday to discuss progress and blockers.
+- **Weekly Status Meetings**: Check-in meetings every Thursday to discuss progress and blockers.
 - **Daily Standups**: Brief daily meetings to address immediate concerns.
-- **Project Management Tool**: Use tools like Jira or Trello to track progress and tasks.
+- **Project Management Tool**: Github Projects to track progress and tasks.
 - **Documentation**: Keep all project documentation up-to-date in a shared drive accessible to all team members.
 
 
