@@ -1,6 +1,6 @@
 const TravelStory = require("../models/travelStory.model");
 
-// Hinzufügen einer neuen Travel Story
+// Add travel story
 exports.addTravelStory = async (req, res) => {
   try {
     const { title, description, location, tags } = req.body;
@@ -32,7 +32,7 @@ exports.addTravelStory = async (req, res) => {
   }
 };
 
-// Alle Travel Stories eines Nutzers abrufen
+// Get all stories
 exports.getAllTravelStories = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -46,7 +46,7 @@ exports.getAllTravelStories = async (req, res) => {
   }
 };
 
-// Eine bestehende Travel Story bearbeiten
+// Edit story
 exports.editTravelStory = async (req, res) => {
   try {
     const { id } = req.params;
@@ -76,7 +76,7 @@ exports.editTravelStory = async (req, res) => {
   }
 };
 
-// Eine Travel Story löschen
+// Delete story
 exports.deleteTravelStory = async (req, res) => {
   try {
     const { id } = req.params;
@@ -101,7 +101,7 @@ exports.deleteTravelStory = async (req, res) => {
   }
 };
 
-// Favoritenstatus einer Travel Story aktualisieren
+// Update isPinned value
 exports.updateIsFavourite = async (req, res) => {
   try {
     const { id } = req.params;
@@ -131,7 +131,7 @@ exports.updateIsFavourite = async (req, res) => {
   }
 };
 
-// Travel Stories nach Schlüsselwort durchsuchen
+// Search stories
 exports.searchTravelStories = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -161,7 +161,7 @@ exports.searchTravelStories = async (req, res) => {
   }
 };
 
-// Travel Stories nach Filtern abrufen
+// Filter stories
 exports.filterTravelStories = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -187,14 +187,14 @@ exports.filterTravelStories = async (req, res) => {
   }
 };
 
-// Bild-Upload für Travel Stories
+// Upload image
 exports.imageUpload = async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: "Image file is required" });
     }
 
-    // Hier könnte zusätzliche Logik für das Speichern des Bildes im Dateisystem oder in einem Cloud-Dienst implementiert werden
+    
     return res
       .status(200)
       .json({
@@ -208,10 +208,10 @@ exports.imageUpload = async (req, res) => {
   }
 };
 
-// Bild einer Travel Story löschen
+// Delete image
 exports.deleteImage = async (req, res) => {
   try {
-    // Hier könnte zusätzliche Logik für das Löschen des Bildes aus dem Dateisystem oder einem Cloud-Dienst implementiert werden
+    
     return res.status(200).json({ message: "Image deleted successfully" });
   } catch (error) {
     return res
