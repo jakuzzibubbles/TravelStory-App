@@ -1,30 +1,28 @@
-import { useEffect, useState } from 'react';
-import Navbar from '../../components/Navbar';
-import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../utils/axiosInstance';
-import { MdAdd } from 'react-icons/md';
-import Modal from 'react-modal';
-import TravelStoryCard from '../../components/Cards/TravelStoryCard';
-import AddEditTravelStory from './AddEditTravelStory';
-import ViewTravelStory from './ViewTravelStory';
-import EmptyCard from '../../components/Cards/EmptyCard';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { DayPicker } from 'react-day-picker';
-import moment from 'moment';
-import FilterInfoTitle from '../../components/Cards/FilterInfoTitle';
-import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
+import { useEffect, useState } from "react";
+import Navbar from "../../components/Navbar";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axiosInstance";
+import { MdAdd } from "react-icons/md";
+import Modal from "react-modal";
+import TravelStoryCard from "../../components/Cards/TravelStoryCard";
+import AddEditTravelStory from "./AddEditTravelStory";
+import ViewTravelStory from "./ViewTravelStory";
+import EmptyCard from "../../components/Cards/EmptyCard";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { DayPicker } from "react-day-picker";
+import moment from "moment";
+import FilterInfoTitle from "../../components/Cards/FilterInfoTitle";
+import { getEmptyCardImg, getEmptyCardMessage } from "../../utils/helper";
 
-  const Home = () => {
+const Home = () => {
   const navigate = useNavigate();
 
   const [userInfo, setUserInfo] = useState(null);
   const [allStories, setAllStories] = useState([]);
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterType, setFilterType] = useState('');
-
-  const [dateRange, setDateRange] = useState({ form: null, to: null });
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterType, setFilterType] = useState("");
+  const [dateRange, setDateRange] = useState({ from: null, to: null });
 
   const [openAddEditModal, setOpenAddEditModal] = useState({
     isShown: false,
@@ -37,181 +35,157 @@ import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
     data: null,
   });
 
-  // Get User Info
+  // Define resetFilter function
+  const resetFilter = () => {
+    setSearchQuery("");
+    setFilterType("");
+    setDateRange({ from: null, to: null });
+    getAllTravelStories();
+  };
+
+  // Fetch User Info
   const getUserInfo = async () => {
     try {
-      const response = await axiosInstance.get("/get-user");
-      if (response.data && response.data.user) {
-        // Set user info if data exists
-        setUserInfo(response.data.user);
-      }
+      const { data } = await axiosInstance.get("/user");
+      if (data?.user) setUserInfo(data.user);
     } catch (error) {
-      if (error.response.status === 401) {
-        // Clear storage if unauthorized
+      if (error.response?.status === 401) {
         localStorage.clear();
-        // Redirect to login
         navigate("/login");
       }
     }
   };
 
-  // Get all travel stories
+  // Fetch All Travel Stories
   const getAllTravelStories = async () => {
     try {
-      const response = await axiosInstance.get("/get-all-stories");
-      if (response.data && response.data.stories) {
-        setAllStories(response.data.stories);
-      }
+      const { data } = await axiosInstance.get("/stories");
+      if (data?.stories) setAllStories(data.stories);
     } catch (error) {
-      console.log("An unexpected error occurred. Please try again.");
+      console.error("Failed to fetch stories. Please try again.");
     }
   };
 
-  // Handle Edit Story Click
-  const handleEdit = (data) => {
-    setOpenAddEditModal({ isShown: true, type: "edit", data: data });
-  };
-
-  // Handle Travel Story Click
-  const handleViewStory = (data) => {
-    setOpenViewModal({ isShown: true, data });
-  };
-
-  // Handle Update Favourite
+  // Toggle Favourite Status
   const updateIsFavourite = async (storyData) => {
-    const storyId = storyData._id;
-
     try {
-      const response = await axiosInstance.put("/update-is-favourite/" + storyId,
+      const { data } = await axiosInstance.put(
+        `/stories/${storyData._id}/favourite`,
         {
           isFavourite: !storyData.isFavourite,
         }
       );
 
-      if (response.data && response.data.story) {
-        toast.success("Story Updated Successfully");
-
-        if (filterType === "search" && searchQuery) {
-          onSearchStory(searchQuery);
-        } else if (filterType === "date") {
-          filterStoriesByDate(dateRange);
-        } else {
-        getAllTravelStories();
-        }
+      if (data?.story) {
+        toast.success("Story updated successfully.");
+        refreshStories();
       }
     } catch (error) {
-      console.log("An unexpected error occurred. Please try again.");
+      console.error("Failed to update favourite status. Please try again.");
     }
   };
 
   // Delete Story
   const deleteTravelStory = async (data) => {
-    const storyId = data._id;
-
     try {
-      const response = await axiosInstance.delete("/delete-story/" + storyId);
-
-      if (response.data && !response.data.error) {
-        toast.error("Story deleted successfully");
-        setOpenViewModal((prevState) => ({ ...prevState, isShown: false }));
+      const { data: response } = await axiosInstance.delete(
+        `/stories/${data._id}`
+      );
+      if (response?.success) {
+        toast.success("Story deleted successfully.");
+        setOpenViewModal({ isShown: false });
         getAllTravelStories();
       }
     } catch (error) {
-          console.log("An unexpected error occurred. Please try again.");
-      }
+      console.error("Failed to delete story. Please try again.");
+    }
   };
 
   // Search Story
   const onSearchNote = async (query) => {
     try {
-      const response = await axiosInstance.get("/search", {
-        params: {
-          query,
-        }
+      const { data } = await axiosInstance.get("/stories/search", {
+        params: { query },
       });
-
-      if (response.data && response.data.stories) {
+      if (data?.stories) {
         setFilterType("search");
-        setAllStories(response.data.stories);
+        setAllStories(data.stories);
       }
-
     } catch (error) {
-          console.log("An unexpected error occurred. Please try again.");
-      }
+      console.error("Failed to search stories. Please try again.");
+    }
   };
 
   const handleClearSearch = () => {
-    setFilterType('');
+    setFilterType("");
     getAllTravelStories();
   };
 
-  // Handle Filter stories by date range
+  // Filter Stories by Date
   const filterStoriesByDate = async (day) => {
     try {
       const startDate = day.from ? moment(day.from).valueOf() : null;
       const endDate = day.to ? moment(day.to).valueOf() : null;
 
       if (startDate && endDate) {
-        const response = await axiosInstance.get("/travel-stories/filter", {
+        const { data } = await axiosInstance.get("/stories/filter", {
           params: { startDate, endDate },
         });
-
-        if (response.data && response.data.stories) {
+        if (data?.stories) {
           setFilterType("date");
-          setAllStories(response.data.stories);
+          setAllStories(data.stories);
         }
-       }
-      } catch (error) {
-        console.log("An unexpected error occurred. Please try again.")
+      }
+    } catch (error) {
+      console.error("Failed to filter stories by date. Please try again.");
     }
   };
 
-  // Handle date range select
+  // Handle Day Click for Date Picker
   const handleDayClick = (day) => {
-    setDateRange(day);
-    filterStoriesByDate(day);
+    setDateRange({ from: day.from, to: day.to });
+    filterStoriesByDate({ from: day.from, to: day.to });
   };
 
-  const resetFilter = (day) => {
-    setDateRange({ from: null, to: null });
-    setFilterType(day);
-    getAllTravelStories();
+  // Refresh Stories based on Filters
+  const refreshStories = () => {
+    if (filterType === "search" && searchQuery) {
+      onSearchNote(searchQuery);
+    } else if (filterType === "date") {
+      filterStoriesByDate(dateRange);
+    } else {
+      getAllTravelStories();
+    }
   };
 
   useEffect(() => {
     getAllTravelStories();
     getUserInfo();
-
-    return () => {};
   }, []);
 
   return (
     <>
       <Navbar
-      userInfo={userInfo}
-      searchQuery={searchQuery}
-      setSearchQuery={setSearchQuery}
-      onSearchNote={onSearchNote}
-      handleClearSearch={handleClearSearch}
+        userInfo={userInfo}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        onSearchNote={onSearchNote}
+        handleClearSearch={handleClearSearch}
       />
 
-      <div className='container mx-auto py-10'>
-
+      <div className="container mx-auto py-10">
         <FilterInfoTitle
           filterType={filterType}
           filterDates={dateRange}
-          onClear={() => {
-            resetFilter();
-          }}
-          />
+          onClear={resetFilter} // Use the resetFilter function
+        />
 
-        <div className='flex gap-7'>
-          <div className='flex-1'>
+        <div className="flex gap-7">
+          <div className="flex-1">
             {allStories?.length > 0 ? (
-              <div className='grid grid-cols-2 gap4'>
-                {allStories.map((item) => {
-                  return (
-                    <TravelStoryCard
+              <div className="grid grid-cols-2 gap-4">
+                {allStories.map((item) => (
+                  <TravelStoryCard
                     key={item._id}
                     imgUrl={item.imageUrl}
                     title={item.title}
@@ -221,26 +195,26 @@ import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
                     isFavourite={item.isFavourite}
                     onClick={() => handleViewStory(item)}
                     onFavouriteClick={() => updateIsFavourite(item)}
-                    />
-                  );
-                })}
-                </div>
-              ) : (
-              <EmptyCard imgSrc={getEmptyCardImg(filterType)}
-              message={getEmptyCardMessage(filterType)}
-               />
+                  />
+                ))}
+              </div>
+            ) : (
+              <EmptyCard
+                imgSrc={getEmptyCardImg(filterType)}
+                message={getEmptyCardMessage(filterType)}
+              />
             )}
           </div>
 
-          <div className='w-[350px]'>
-            <div className='bg-white border border-slate-200 shadow-lg shadow-slate-200/60 rounded-lg'>
-              <div className='p-3'>
+          <div className="w-[350px]">
+            <div className="bg-white border border-slate-200 shadow-lg shadow-slate-200/60 rounded-lg">
+              <div className="p-3">
                 <DayPicker
-                 captionLayout='dropdown-buttons'
-                 mode='range'
-                 selected={dateRange}
-                 onSelect={handleDayClick}
-                 pagedNavigation
+                  captionLayout="dropdown-buttons"
+                  mode="range"
+                  selected={dateRange}
+                  onSelect={handleDayClick} // Set the onSelect prop
+                  pagedNavigation
                 />
               </div>
             </div>
@@ -248,7 +222,7 @@ import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
         </div>
       </div>
 
-      {/* Add & Edit Travel Story Modal*/}
+      {/* Add & Edit Travel Story Modal */}
       <Modal
         isOpen={openAddEditModal.isShown}
         onRequestClose={() => {}}
@@ -258,21 +232,21 @@ import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
             zIndex: 999,
           },
         }}
-          appElement={document.getElementById("root")}
-          className='model-box'
-        >
-          <AddEditTravelStory
+        appElement={document.getElementById("root")}
+        className="model-box"
+      >
+        <AddEditTravelStory
           type={openAddEditModal.type}
           storyInfo={openAddEditModal.data}
           onClose={() => {
             setOpenAddEditModal({ isShown: false, type: "add", data: null });
           }}
           getAllTravelStories={getAllTravelStories}
-          />
-        </Modal>
+        />
+      </Modal>
 
-       {/* View Travel Story Modal*/}
-       <Modal
+      {/* View Travel Story Modal */}
+      <Modal
         isOpen={openViewModal.isShown}
         onRequestClose={() => {}}
         style={{
@@ -281,34 +255,42 @@ import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
             zIndex: 999,
           },
         }}
-          appElement={document.getElementById("root")}
-          className='model-box'
-        >
-          <ViewTravelStory
+        appElement={document.getElementById("root")}
+        className="model-box"
+      >
+        <ViewTravelStory
           storyInfo={openViewModal.data || null}
           onClose={() => {
-            setOpenViewModal((prevState) => ({ ...prevState, isShown: false }));
+            setOpenViewModal({ isShown: false });
           }}
           onEditClick={() => {
-            setOpenViewModal((prevState) => ({ ...prevState, isShown: false }));
-            handleEdit(openViewModal.data || null)
+            setOpenViewModal({ isShown: false });
+            handleEdit(openViewModal.data || null);
           }}
           onDeleteClick={() => {
             deleteTravelStory(openViewModal.data || null);
           }}
-            />
-          </Modal>
+        />
+      </Modal>
 
       <button
-      className='w-16 h-16 flex items-center justify-center rounded-full bg-primary hover:bg-cyan-400 fixed right-10 bottom-10'
-      onClick={() => {
-        setOpenAddEditModal({ isShown: true, type: "add", data: null });
-      }}
+        className="w-16 h-16 flex items-center justify-center rounded-full bg-primary hover:bg-cyan-400 fixed right-10 bottom-10"
+        onClick={() => {
+          setOpenAddEditModal({ isShown: true, type: "add", data: null });
+        }}
       >
-        <MdAdd className='text-[32px] text-white' />
+        <MdAdd className="text-[32px] text-white" />
       </button>
 
       <ToastContainer />
+
+      {/* Display User Initials */}
+      {userInfo && (
+        <div className="absolute top-4 right-4 text-xl">
+          {userInfo.firstName.charAt(0)}
+          {userInfo.lastName.charAt(0)}
+        </div>
+      )}
     </>
   );
 };
