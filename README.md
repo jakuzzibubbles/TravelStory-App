@@ -82,5 +82,6 @@
 - **Daily Standups**: Brief daily meetings to address immediate concerns.
 - **Project Management Tool**: Github Projects to track progress and tasks.
 - **Documentation**: Keep all project documentation up-to-date in a shared drive accessible to all team members.
+- **Social Contract: How do we want to work together? 
 
 
