@@ -83,4 +83,3 @@
 - **Project Management Tool**: Github Projects to track progress and tasks.
 - **Documentation**: Keep all project documentation up-to-date in a shared drive accessible to all team members.
 
-
