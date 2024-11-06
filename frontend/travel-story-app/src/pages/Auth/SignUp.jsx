@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import PasswordInput from '/src/components/input/PasswordInput';
+import PasswordInput from '../../components/Input/PasswordInput';
 import { useNavigate } from 'react-router-dom';
 import { validateEmail } from '../../utils/helper';
 import axiosInstance from '../../utils/axiosInstance';
