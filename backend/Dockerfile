@@ -1,5 +1,5 @@
 # Stage 1: Build Stage
-FROM node:14-alpine AS build
+FROM node:22-alpine AS build
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -14,7 +14,7 @@ RUN npm install --production
 COPY . .
 
 # Stage 2: Production Stage
-FROM node:14-alpine
+FROM node:22-alpine
 
 # Add a non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup

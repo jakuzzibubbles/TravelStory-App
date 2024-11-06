@@ -1,5 +1,5 @@
 # Stage 1: Build Stage
-FROM node:14-alpine AS build
+FROM node:22-alpine AS build
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -18,9 +18,6 @@ RUN npm run build
 
 # Stage 2: Production Stage
 FROM nginx:alpine
-
-# Copy the build output from the build stage to the Nginx HTML directory
-COPY --from=build /usr/src/app/build /usr/share/nginx/html
 
 # Copy custom Nginx configuration file
 COPY nginx.conf /etc/nginx/nginx.conf
