@@ -70,7 +70,7 @@ Implementing reusable modals for adding and editing notes taught me the value of
 
 **Learning**: The concept of reusability is crucial in software development. Building components that can be reused across different parts of the application not only saves time but also promotes consistency in design and functionality.
 
-### Project Plan: Deployment of Travel App to Cloud Service
+## Project Plan: Deployment of Travel App to Cloud Service
 
 #### **Project Overview**
 - **Project Name**: TravelStory-App Cloud Deployment
