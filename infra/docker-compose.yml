@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # Frontend Service
+  frontend:
+    build:
+      context: ../frontend       
+      dockerfile: Dockerfile       
+    ports:
+      - "3000:80"                 
+    networks:
+      - app-network
+
+  # Backend Service
+  backend:
+    build:
+      context: ../backend        
+      dockerfile: Dockerfile     
+    environment:
+      - DATABASE_URL=your_database_url
+      - API_KEY=your_api_key
+    ports:
+      - "5000:5000"            
+    networks:
+      - app-network
+
+  # Nginx reverse proxy service
+  nginx:
+    image: nginx:alpine         
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf  
+      - ../frontend/build:/usr/share/nginx/html              
+    ports:
+      - "80:80"                  
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
