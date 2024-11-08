@@ -1,43 +1,37 @@
-version: '3.8'
-
 services:
-  # Frontend Service
-  frontend:
-    build:
-      context: ../frontend       
-      dockerfile: Dockerfile       
-    ports:
-      - "3000:80"                 
-    networks:
-      - app-network
-
-  # Backend Service
   backend:
-    build:
-      context: ../backend        
-      dockerfile: Dockerfile     
+    build: ./backend
+    ports:
+      - "8000:8000" 
+    networks:
+      - mern_network
     environment:
-      - DATABASE_URL=your_database_url
-      - API_KEY=your_api_key
-    ports:
-      - "5000:5000"            
-    networks:
-      - app-network
-
-  # Nginx reverse proxy service
-  nginx:
-    image: nginx:alpine         
-    volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf  
-      - ../frontend/build:/usr/share/nginx/html              
-    ports:
-      - "80:80"                  
+      MONGO_URI: mongodb://mongo:27017/mydatabase  
     depends_on:
-      - frontend
-      - backend
+      - mongodb
+
+  frontend:
+    build: ./frontend/travel-story-app
+    ports:
+      - "5173:5173"  
     networks:
-      - app-network
+      - mern_network
+    environment:
+      REACT_APP_API_URL: http://backend:8000 
+
+  mongodb:
+    image: mongo:latest  
+    ports:
+      - "27017:27017"  
+    networks:
+      - mern_network
+    volumes:
+      - mongo-data:/data/db  
 
 networks:
-  app-network:
-    driver: bridge
+  mern_network:
+    driver: bridge 
+
+volumes:
+  mongo-data:
+    driver: local
