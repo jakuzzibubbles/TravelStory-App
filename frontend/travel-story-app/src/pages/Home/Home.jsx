@@ -1,28 +1,29 @@
-import { useEffect, useState } from 'react';
-import Navbar from '../../components/Navbar';
-import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../utils/axiosInstance';
-import { MdAdd } from 'react-icons/md';
-import Modal from 'react-modal';
-import TravelStoryCard from '../../components/Cards/TravelStoryCard';
-import AddEditTravelStory from './AddEditTravelStory';
-import ViewTravelStory from './ViewTravelStory';
-import EmptyCard from '../../components/Cards/EmptyCard';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { DayPicker } from 'react-day-picker';
-import moment from 'moment';
-import FilterInfoTitle from '../../components/Cards/FilterInfoTitle';
-import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
+import React from "react";
+import { useEffect, useState } from "react";
+import Navbar from "../../components/Navbar";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axiosInstance";
+import { MdAdd } from "react-icons/md";
+import Modal from "react-modal";
+import TravelStoryCard from "../../components/Cards/TravelStoryCard";
+import AddEditTravelStory from "./AddEditTravelStory";
+import ViewTravelStory from "./ViewTravelStory";
+import EmptyCard from "../../components/Cards/EmptyCard";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { DayPicker } from "react-day-picker";
+import moment from "moment";
+import FilterInfoTitle from "../../components/Cards/FilterInfoTitle";
+import { getEmptyCardImg, getEmptyCardMessage } from "../../utils/helper";
 
-  const Home = () => {
+const Home = () => {
   const navigate = useNavigate();
 
   const [userInfo, setUserInfo] = useState(null);
   const [allStories, setAllStories] = useState([]);
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterType, setFilterType] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterType, setFilterType] = useState("");
 
   const [dateRange, setDateRange] = useState({ form: null, to: null });
 
@@ -82,7 +83,8 @@ import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
     const storyId = storyData._id;
 
     try {
-      const response = await axiosInstance.put("/update-is-favourite/" + storyId,
+      const response = await axiosInstance.put(
+        "/update-is-favourite/" + storyId,
         {
           isFavourite: !storyData.isFavourite,
         }
@@ -96,7 +98,7 @@ import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
         } else if (filterType === "date") {
           filterStoriesByDate(dateRange);
         } else {
-        getAllTravelStories();
+          getAllTravelStories();
         }
       }
     } catch (error) {
@@ -117,8 +119,8 @@ import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
         getAllTravelStories();
       }
     } catch (error) {
-          console.log("An unexpected error occurred. Please try again.");
-      }
+      console.log("An unexpected error occurred. Please try again.");
+    }
   };
 
   // Search Story
@@ -127,21 +129,20 @@ import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
       const response = await axiosInstance.get("/search", {
         params: {
           query,
-        }
+        },
       });
 
       if (response.data && response.data.stories) {
         setFilterType("search");
         setAllStories(response.data.stories);
       }
-
     } catch (error) {
-          console.log("An unexpected error occurred. Please try again.");
-      }
+      console.log("An unexpected error occurred. Please try again.");
+    }
   };
 
   const handleClearSearch = () => {
-    setFilterType('');
+    setFilterType("");
     getAllTravelStories();
   };
 
@@ -160,9 +161,9 @@ import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
           setFilterType("date");
           setAllStories(response.data.stories);
         }
-       }
-      } catch (error) {
-        console.log("An unexpected error occurred. Please try again.")
+      }
+    } catch (error) {
+      console.log("An unexpected error occurred. Please try again.");
     }
   };
 
@@ -188,59 +189,59 @@ import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
   return (
     <>
       <Navbar
-      userInfo={userInfo}
-      searchQuery={searchQuery}
-      setSearchQuery={setSearchQuery}
-      onSearchNote={onSearchNote}
-      handleClearSearch={handleClearSearch}
+        userInfo={userInfo}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        onSearchNote={onSearchNote}
+        handleClearSearch={handleClearSearch}
       />
 
-      <div className='container mx-auto py-10'>
-
+      <div className="container mx-auto py-10">
         <FilterInfoTitle
           filterType={filterType}
           filterDates={dateRange}
           onClear={() => {
             resetFilter();
           }}
-          />
+        />
 
-        <div className='flex gap-7'>
-          <div className='flex-1'>
+        <div className="flex gap-7">
+          <div className="flex-1">
             {allStories?.length > 0 ? (
-              <div className='grid grid-cols-2 gap4'>
+              <div className="grid grid-cols-2 gap4">
                 {allStories.map((item) => {
                   return (
                     <TravelStoryCard
-                    key={item._id}
-                    imgUrl={item.imageUrl}
-                    title={item.title}
-                    story={item.story}
-                    date={item.visitedDate}
-                    visitedLocation={item.visitedLocation}
-                    isFavourite={item.isFavourite}
-                    onClick={() => handleViewStory(item)}
-                    onFavouriteClick={() => updateIsFavourite(item)}
+                      key={item._id}
+                      imgUrl={item.imageUrl}
+                      title={item.title}
+                      story={item.story}
+                      date={item.visitedDate}
+                      visitedLocation={item.visitedLocation}
+                      isFavourite={item.isFavourite}
+                      onClick={() => handleViewStory(item)}
+                      onFavouriteClick={() => updateIsFavourite(item)}
                     />
                   );
                 })}
-                </div>
-              ) : (
-              <EmptyCard imgSrc={getEmptyCardImg(filterType)}
-              message={getEmptyCardMessage(filterType)}
-               />
+              </div>
+            ) : (
+              <EmptyCard
+                imgSrc={getEmptyCardImg(filterType)}
+                message={getEmptyCardMessage(filterType)}
+              />
             )}
           </div>
 
-          <div className='w-[350px]'>
-            <div className='bg-white border border-slate-200 shadow-lg shadow-slate-200/60 rounded-lg'>
-              <div className='p-3'>
+          <div className="w-[350px]">
+            <div className="bg-white border border-slate-200 shadow-lg shadow-slate-200/60 rounded-lg">
+              <div className="p-3">
                 <DayPicker
-                 captionLayout='dropdown-buttons'
-                 mode='range'
-                 selected={dateRange}
-                 onSelect={handleDayClick}
-                 pagedNavigation
+                  captionLayout="dropdown-buttons"
+                  mode="range"
+                  selected={dateRange}
+                  onSelect={handleDayClick}
+                  pagedNavigation
                 />
               </div>
             </div>
@@ -258,21 +259,21 @@ import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
             zIndex: 999,
           },
         }}
-          appElement={document.getElementById("root")}
-          className='model-box'
-        >
-          <AddEditTravelStory
+        appElement={document.getElementById("root")}
+        className="model-box"
+      >
+        <AddEditTravelStory
           type={openAddEditModal.type}
           storyInfo={openAddEditModal.data}
           onClose={() => {
             setOpenAddEditModal({ isShown: false, type: "add", data: null });
           }}
           getAllTravelStories={getAllTravelStories}
-          />
-        </Modal>
+        />
+      </Modal>
 
-       {/* View Travel Story Modal*/}
-       <Modal
+      {/* View Travel Story Modal*/}
+      <Modal
         isOpen={openViewModal.isShown}
         onRequestClose={() => {}}
         style={{
@@ -281,31 +282,31 @@ import { getEmptyCardImg, getEmptyCardMessage } from '../../utils/helper';
             zIndex: 999,
           },
         }}
-          appElement={document.getElementById("root")}
-          className='model-box'
-        >
-          <ViewTravelStory
+        appElement={document.getElementById("root")}
+        className="model-box"
+      >
+        <ViewTravelStory
           storyInfo={openViewModal.data || null}
           onClose={() => {
             setOpenViewModal((prevState) => ({ ...prevState, isShown: false }));
           }}
           onEditClick={() => {
             setOpenViewModal((prevState) => ({ ...prevState, isShown: false }));
-            handleEdit(openViewModal.data || null)
+            handleEdit(openViewModal.data || null);
           }}
           onDeleteClick={() => {
             deleteTravelStory(openViewModal.data || null);
           }}
-            />
-          </Modal>
+        />
+      </Modal>
 
       <button
-      className='w-16 h-16 flex items-center justify-center rounded-full bg-primary hover:bg-cyan-400 fixed right-10 bottom-10'
-      onClick={() => {
-        setOpenAddEditModal({ isShown: true, type: "add", data: null });
-      }}
+        className="w-16 h-16 flex items-center justify-center rounded-full bg-primary hover:bg-cyan-400 fixed right-10 bottom-10"
+        onClick={() => {
+          setOpenAddEditModal({ isShown: true, type: "add", data: null });
+        }}
       >
-        <MdAdd className='text-[32px] text-white' />
+        <MdAdd className="text-[32px] text-white" />
       </button>
 
       <ToastContainer />

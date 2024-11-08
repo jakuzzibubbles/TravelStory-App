@@ -1,9 +1,13 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Login from "./pages/Auth/Login";
 import SignUp from "./pages/Auth/SignUp";
 import Home from "./pages/Home/Home";
-
 
 const App = () => {
   return (
@@ -17,8 +21,8 @@ const App = () => {
         </Routes>
       </Router>
     </div>
-  )
-}
+  );
+};
 
 // Define the Root component to handle the initial redirect
 const Root = () => {
