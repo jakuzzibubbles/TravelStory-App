@@ -1,6 +1,5 @@
 require("dotenv").config();
 
-const config = require("./config.json");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const express = require("express");
@@ -15,7 +14,13 @@ const { authenticateToken } = require("./utilities");
 const User = require("./models/user.model");
 const TravelStory = require("./models/travelStory.model");
 
-mongoose.connect(config.connectionString);
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("Datenbank verbunden"))
+  .catch((error) => {
+    console.error("Fehler bei der Datenbankverbindung:", error);
+    process.exit(1);
+  });
+
 
 const app = express();
 app.use(express.json());
@@ -350,8 +355,11 @@ app.get("/travel-stories/filter", authenticateToken, async (req, res) => {
     }
 });
 
-app.listen(8000, "0.0.0.0", () => {
-  console.log("Server is running on http://0.0.0.0:8000");
+const port = process.env.PORT;
+const host = process.env.HOST;
+
+app.listen(port, host, () => {
+  console.log(`Server is running on http://${host}:${port}`);
 });
 module.exports = app;
 
