@@ -1,9 +1,10 @@
 const User = require("../models/user.model");
 
 exports.getUser = async (req, res) => {
-  const { userId } = req.user;
+  try {
+    const { userId } = req.user;
 
-  const isUser = await User.findOne({ _id: userId });
+    const isUser = await User.findOne({ _id: userId });
 
   if (!isUser) {
     return res.sendStatus(401);
@@ -13,4 +14,10 @@ exports.getUser = async (req, res) => {
     user: isUser,
     message: "",
   });
+} catch (error) {
+    console.error(error);
+    return res.sendStatus(500);
+  }
 };
+
+
