@@ -9,10 +9,10 @@ function authenticateToken(req, res, next) {
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     // Token invalid, forbidden
-    if (err) return res.sendStatus(401);
+    if (err) return res.sendStatus(403);
     req.user = user;
     next();
   });
 }
 
-module.exports = authenticateToken;
+module.exports = { authenticateToken };
