@@ -99,7 +99,7 @@ const Login = () => {
               <p className="text-xs text-slate-500 text-center my-4">Or</p>
 
               <button type="submit" className="btn-primary btn-light" onClick={() => {
-                navigate("/api/register");
+                navigate("/signup");
               }}
               >
                 CREATE ACCOUNT

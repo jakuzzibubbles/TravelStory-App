@@ -155,7 +155,7 @@ const Home = () => {
       const endDate = day.to ? moment(day.to).valueOf() : null;
 
       if (startDate && endDate) {
-        const response = await axiosInstance.get("/api/travel-stories/filter", {
+        const response = await axiosInstance.get("/api/filter", {
           params: { startDate, endDate },
         });
 

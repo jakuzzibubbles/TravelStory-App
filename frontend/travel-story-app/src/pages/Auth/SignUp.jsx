@@ -34,7 +34,7 @@ const SignUp = () => {
 
     // SignUp API
     try {
-      const response = await axiosInstance.post("/api/register", {
+      const response = await axiosInstance.post("/api/signup", {
         fullName: name,
         email: email,
         password: password,
@@ -116,7 +116,7 @@ const SignUp = () => {
               <p className="text-xs text-slate-500 text-center my-4">Or</p>
 
               <button type="submit" className="btn-primary btn-light" onClick={() => {
-                navigate("/api/login");
+                navigate("/login");
               }}
               >
               LOGIN
