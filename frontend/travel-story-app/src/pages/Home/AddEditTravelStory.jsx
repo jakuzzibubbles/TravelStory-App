@@ -53,13 +53,13 @@ const AddEditTravelStory = ({
       if (type === "edit") {
         // Update existing story
         const { data } = await axiosInstance.put(
-          `/stories/${storyInfo._id}`,
+          `/api/stories/${storyInfo._id}`,
           requestData
         );
         if (data?.story) toast.success("Story updated successfully.");
       } else {
         // Create new story
-        const { data } = await axiosInstance.post("/stories", requestData);
+        const { data } = await axiosInstance.post("/api/stories", requestData);
         if (data?.story) toast.success("Story added successfully.");
       }
 

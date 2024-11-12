@@ -28,7 +28,7 @@ const Login = () => {
 
     // Login API
     try {
-      const response = await axiosInstance.post("/login", {
+      const response = await axiosInstance.post("/api/login", {
         email: email,
         password: password,
       });
@@ -99,7 +99,7 @@ const Login = () => {
               <p className="text-xs text-slate-500 text-center my-4">Or</p>
 
               <button type="submit" className="btn-primary btn-light" onClick={() => {
-                navigate("/signup");
+                navigate("/api/register");
               }}
               >
                 CREATE ACCOUNT
