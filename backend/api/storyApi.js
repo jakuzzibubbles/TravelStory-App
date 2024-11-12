@@ -1,4 +1,4 @@
-const TravelStory = require("../models/travelStory.model");
+const TravelStory = require("../models/storyModel");
 
 exports.addTravelStory = async (req, res) => {
   const { title, story, visitedLocation, imageUrl, visitedDate } = req.body;
