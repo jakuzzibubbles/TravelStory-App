@@ -15,14 +15,17 @@ const AddEditTravelStory = ({
   onClose,
   getAllTravelStories,
 }) => {
-  const [form, setForm] = useState({
-    title: storyInfo?.title || "",
-    story: storyInfo?.story || "",
-    tags: storyInfo?.tags || [],
-    imageUrl: storyInfo?.imageUrl || "",
-    visitedLocation: storyInfo?.visitedLocation || "",
-    visitedDate: storyInfo?.visitedDate || null,
-  });
+  const [title, setTitle] = useState(storyInfo?.title || "");
+  const [storyImg, setStoryImg] = useState(storyInfo?.imageUrl || null);
+  const [story, setStory] = useState(storyInfo?.story || "");
+  const [visitedLocation, setVisitedLocation] = useState(
+    storyInfo?.visitedLocation || []
+  );
+  const [visitedDate, setVisitedDate] = useState(
+    storyInfo?.visitedDate || null
+  );
+
+  const [error, setError] = useState("");
 
   // Add New Travel Story
   const addNewTravelStory = async () => {

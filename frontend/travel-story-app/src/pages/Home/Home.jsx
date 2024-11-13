@@ -116,7 +116,7 @@ const Home = () => {
       );
 
       if (response.data && !response.data.error) {
-        toast.error("Story deleted successfully");
+        toast.success("Story deleted successfully");
         setOpenViewModal((prevState) => ({ ...prevState, isShown: false }));
         getAllTravelStories();
       }
