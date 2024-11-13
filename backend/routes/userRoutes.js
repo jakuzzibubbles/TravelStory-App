@@ -6,6 +6,7 @@ const { authenticateToken } = require("../utilities");
 router.post("/signup", userApi.createAccount);
 router.post("/login", userApi.login);
 router.get("/user", authenticateToken, userApi.getUser);
+router.delete("/delete-story/:id", authenticateToken, userApi.deleteStory);
 
 
 
