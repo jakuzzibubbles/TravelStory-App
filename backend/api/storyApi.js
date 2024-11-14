@@ -80,7 +80,7 @@ exports.deleteStory = async (req, res) => {
     const imageUrl = travelStory.imageUrl;
     const filename = path.basename(imageUrl);
 
-    const filePath = path.join(__dirname, "../uploads", filename);
+    const filePath = path.join(__dirname, "uploads", filename);
 
     fs.unlink(filePath, (err) => {
       if (err) console.error("Failed to delete image file:", err);
