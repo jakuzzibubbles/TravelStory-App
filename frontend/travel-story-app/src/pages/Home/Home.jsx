@@ -111,12 +111,10 @@ const Home = () => {
     const storyId = data._id;
 
     try {
-      const response = await axiosInstance.delete(
-        "/api/delete-story/" + storyId
-      );
-
+      const response = await axiosInstance.delete("/api/delete-story/" + storyId);
+      
       if (response.data && !response.data.error) {
-        toast.success("Story deleted successfully");
+        toast.error("Story deleted successfully");
         setOpenViewModal((prevState) => ({ ...prevState, isShown: false }));
         getAllTravelStories();
       }

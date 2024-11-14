@@ -67,16 +67,21 @@ exports.editStory = async (req, res) => {
 exports.deleteStory = async (req, res) => {
   const { id } = req.params;
   const { userId } = req.user;
+
   try {
-    const travelStory = await TravelStory.findOne({ _id: id, userId });
+    const travelStory = await TravelStory.findOne({ _id: id, userId: userId });
     if (!travelStory)
       return res
         .status(404)
         .json({ error: true, message: "Travel Story not found" });
-    await travelStory.deleteOne({ _id: id, userId });
+
+    await travelStory.deleteOne({ _id: id, userId: userId });
+
     const imageUrl = travelStory.imageUrl;
     const filename = path.basename(imageUrl);
+
     const filePath = path.join(__dirname, "../uploads", filename);
+
     fs.unlink(filePath, (err) => {
       if (err) console.error("Failed to delete image file:", err);
     });
