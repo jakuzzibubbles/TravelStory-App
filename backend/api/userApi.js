@@ -64,9 +64,9 @@ exports.getUser = async (req, res) => {
 };
 
 exports.deleteStory = async (req, res) => {
-  const { storyId } = req.params;
+  const { id } = req.params;
   try {
-    const story = await Story.findByIdAndDelete(storyId);
+    const story = await Story.findByIdAndDelete(id);
     if (!story) {
       return res.status(404).json({ error: true, message: "Story not found" });
     }
