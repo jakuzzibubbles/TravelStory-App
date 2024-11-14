@@ -108,10 +108,10 @@ const Home = () => {
 
   // Delete Story
   const deleteTravelStory = async (data) => {
-    const storyId = data._id;
+    const id = data._id;
 
     try {
-      const response = await axiosInstance.delete("/api/delete-story/" + storyId);
+      const response = await axiosInstance.delete("/api/delete-story/" + id);
       
       if (response.data && !response.data.error) {
         toast.error("Story deleted successfully");
