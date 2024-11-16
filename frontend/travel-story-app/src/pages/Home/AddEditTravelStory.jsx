@@ -212,7 +212,7 @@ const AddEditTravelStory = ({
           <input
             type="text"
             className="text-2xl text-slate-950 outline-none"
-            placeholder="A Day in Space"
+            placeholder="Your title"
             value={title}
             onChange={({ target }) => setTitle(target.value)}
           />
