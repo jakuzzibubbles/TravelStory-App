@@ -15,9 +15,9 @@ const User = require("./models/user.model");
 const TravelStory = require("./models/travelStory.model");
 
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("Datenbank verbunden"))
+  .then(() => console.log("Connected to MongoDb"))
   .catch((error) => {
-    console.error("Fehler bei der Datenbankverbindung:", error);
+    console.error("Failed to connect to MongoDb:", error);
     process.exit(1);
   });
 
