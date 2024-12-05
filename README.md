@@ -30,8 +30,8 @@ This travel app provides a platform for users to explore, document, and share th
 #### MongoDB:
 **Learning**: The flexibility of MongoDB allows for rapid prototyping and iterative development, which is particularly beneficial in the early stages of project development. However, I also realized that careful planning is necessary to ensure data integrity and efficient querying as the application scales.
 
-#### Express.js:
-**Learning**: The use of middleware in Express.js taught me the importance of separating concerns in my application. By modularizing functionality, I was able to maintain cleaner code and enhance the overall structure of my projects.
+#### Express:
+**Learning**: The use of middleware in Express taught me the importance of separating concerns in my application. By modularizing functionality, I was able to maintain cleaner code and enhance the overall structure of my projects.
 
 #### React:
 **Learning**: Understanding the lifecycle of components in React has significantly improved my ability to handle asynchronous data fetching and rendering. The `useEffect` hook, in particular, enabled me to synchronize my components with external data sources seamlessly.
